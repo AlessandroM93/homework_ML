@@ -58,7 +58,7 @@ hash_def = out[0]
 type_def = out[1]
 
 print("FATTO\n\n")
-percent_learning = 1
+percent_learning = 0.5
 percent_testing = 1 - percent_learning
 
 total_set = len(list_files)
@@ -139,8 +139,9 @@ FP = 0
 hash_tags('TESTING','*')
 #if num_test==0: num_test = 10000
 num_test=len(list_files)
-print(num_test)
-for i in range(len(list_files)):
+
+
+for i in range(num_test):
   path=path_feature+list_files[i]
   if list_files[i] in hash_def: real = True
   else: real=False
@@ -155,17 +156,26 @@ for i in range(len(list_files)):
   while(line!=''):
    line=line.replace("\n","")
    if line in goodware_diction: prob_good *= (goodware_diction[line]+1)/(boi_goodware+2)
-   if line in malware_diction:  prob_mal *= (malware_diction[line]+1)/(boi_malware+2)
+   if line in malware_diction:prob_mal *= (malware_diction[line]+1)/(boi_malware+2)
    line = F.readline()
    
-
-  prob_mal *= mw/(mw+gw)
-  prob_good *= gw/(mw+gw)
-
+  
   if prob_mal == 1: prob_mal=0
   if prob_good == 1: prob_good=0
-
-  if prob_good > prob_mal : res=False
+  '''
+  if prob_good == 0 and prob_mal==0: 
+    prob_good=1/2
+    prob_mal=1/2
+  '''
+  #print(prob_good,prob_mal)
+  prob_mal *= mw/(mw+gw)
+  prob_good *= gw/(mw+gw)
+  
+  '''
+  prob_good=prob_good/(prob_good+prob_mal)
+  prob_mal=prob_mal/(prob_good+prob_mal)
+  '''
+  if prob_good <= prob_mal : res=False
   else:  res=True
 
   if res==True and real==False  :  FN += 1 
@@ -187,6 +197,14 @@ print("\n")
 
 print('TN, TP, FN, FP', TN, TP, FN, FP)
 
+conf = [[TN,TP],[FN,FP]]
+
+'''
+print("\n\t|\tTN\t|\tHam\t|"+
+      "\nSpam\t|\t"+           str(conf[0][0])         +"\t|\t"+        str(conf[0][1])+
+      "\t|\t"+"\nHam\t|\t"+    str(conf[1][0])         +"\t|\t"+        str(conf[1][1])+"\t|")
+
+'''
 
 hash_tags('END','*')
 print("\n\n")
