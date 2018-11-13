@@ -175,10 +175,10 @@ for i in range(num_test):
   prob_good=prob_good/(prob_good+prob_mal)
   prob_mal=prob_mal/(prob_good+prob_mal)
   '''
-  if prob_good <= prob_mal : res=False
+  if prob_mal > prob_good: res=False
   else:  res=True
 
-  if res==True and real==False  :  FN += 1 
+  if res==True and real==False  :  FP += 1 
   if res==True and real==True   :  TP += 1
   if res==False and real==True  :  FN += 1
   if res==False and real==False :  TN += 1
@@ -197,14 +197,12 @@ print("\n")
 
 print('TN, TP, FN, FP', TN, TP, FN, FP)
 
-conf = [[TN,TP],[FN,FP]]
 
-'''
-print("\n\t|\tTN\t|\tHam\t|"+
-      "\nSpam\t|\t"+           str(conf[0][0])         +"\t|\t"+        str(conf[0][1])+
-      "\t|\t"+"\nHam\t|\t"+    str(conf[1][0])         +"\t|\t"+        str(conf[1][1])+"\t|")
+print("\n\t|\tM\t|\tG\t|"+
+      "\nM\t|\t"+           str(TP)         +"\t|\t"+        str(FN)+
+      "\t|\t"+"\nG\t|\t"+    str(FP)         +"\t|\t"+        str(TN)+"\t|")
 
-'''
+print("\n\n")
 
 hash_tags('END','*')
 print("\n\n")
