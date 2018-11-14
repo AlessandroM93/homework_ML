@@ -11,6 +11,7 @@ import pickle
 from collections import Counter
 #from clint.textui import progress
 
+
 def hash_tags(title,car):
   ts =  shutil.get_terminal_size()
   terminal_col=ts[0]
@@ -46,6 +47,8 @@ def csv_read(path):
      F.close()           
      return (hash_def,type_def)
 
+
+
 path_feature = '/Users/alessandro/Desktop/Homework/drebin/feature_vectors/'
 #path_feature = '/home/parallels/Documents/Homework/drebin/prova/'
 path_csv  = '/Users/alessandro/Desktop/Homework/drebin/sha256_family.csv'
@@ -58,7 +61,7 @@ hash_def = out[0]
 type_def = out[1]
 
 print("FATTO\n\n")
-percent_learning = 0.5
+percent_learning = 1
 percent_testing = 1 - percent_learning
 
 total_set = len(list_files)
@@ -74,6 +77,7 @@ goodware_diction=dict()
 malware_diction_prob=dict()
 goodware_diction_prob=dict()
 
+#plot_graph()
 
 
 hash_tags("LEARNING TRIP START",'#')
@@ -155,13 +159,18 @@ for i in range(num_test):
 
   while(line!=''):
    line=line.replace("\n","")
+   
    if line in goodware_diction: prob_good *= (goodware_diction[line]+1)/(boi_goodware+2)
+   else: prob_good=0
+   
    if line in malware_diction:prob_mal *= (malware_diction[line]+1)/(boi_malware+2)
+   else:prob_good=0
    line = F.readline()
    
-  
+  '''
   if prob_mal == 1: prob_mal=0
   if prob_good == 1: prob_good=0
+    '''
   '''
   if prob_good == 0 and prob_mal==0: 
     prob_good=1/2
